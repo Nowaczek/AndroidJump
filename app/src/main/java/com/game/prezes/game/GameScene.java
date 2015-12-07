@@ -108,15 +108,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     {
         if (pSceneTouchEvent.isActionDown())
         {
-            if (!firstTouch)
-            {
-                player.setRunning();
-                firstTouch = true;
-            }
-            else
-            {
+
+
+
                 player.jump();
-            }
+
         }
         return false;
     }
@@ -275,7 +271,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
     private void createPhysics()
     {
-        physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
+        physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -80), false);
         physicsWorld.setContactListener(contactListener());
         registerUpdateHandler(physicsWorld);
     }

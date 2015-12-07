@@ -60,12 +60,24 @@ public abstract class Player extends AnimatedSprite
                 {
                     onDie();
                 }
-
+                body.setLinearVelocity(new Vector2(2,2));
+                if (canRun)
+                {
+                    if (footContacts < 1)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
+                    }
+                }
                 if (canRun)
                 {
                     body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
                 }
             }
+
         });
     }
 
@@ -84,7 +96,7 @@ public abstract class Player extends AnimatedSprite
         {
             return;
         }
-        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 12));
+        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 45));
     }
 
     public void increaseFootContacts()
