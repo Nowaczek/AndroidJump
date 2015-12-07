@@ -98,7 +98,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     {
         camera.setHUD(null);
         camera.setChaseEntity(null); //TODO
-        camera.setCenter(400, 240);
+        camera.setCenter(240, 400);
 
         // TODO code responsible for disposing scene
         // removing all game scene objects.
@@ -254,7 +254,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     {
         gameHUD = new HUD();
 
-        scoreText = new Text(20, 420, resourcesManager.font, "Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+        scoreText = new Text(10, 740, resourcesManager.font, "Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
         scoreText.setAnchorCenter(0, 0);
         scoreText.setText("Score: 0");
         gameHUD.attachChild(scoreText);

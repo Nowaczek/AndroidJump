@@ -73,7 +73,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     private void createBackground()
     {
-        attachChild(new Sprite(400, 240, resourcesManager.menu_background_region, vbom)
+        attachChild(new Sprite(240, 400, resourcesManager.menu_background_region, vbom)
         {
             @Override
             protected void preDraw(GLState pGLState, Camera pCamera)
@@ -87,7 +87,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     private void createMenuChildScene()
     {
         menuChildScene = new MenuScene(camera);
-        menuChildScene.setPosition(400, 240);
+        menuChildScene.setPosition(0, 0);
 
         final IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region, vbom), 1.2f, 1);
         final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OPTIONS, resourcesManager.options_region, vbom), 1.2f, 1);
