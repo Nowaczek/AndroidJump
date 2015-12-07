@@ -14,7 +14,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 /**
  * Created by Prezes on 2015-11-27.
  */
-public abstract class Player extends AnimatedSprite
+public abstract class Player extends AnimatedSprite 
 {
     // ---------------------------------------------
     // VARIABLES
@@ -60,7 +60,7 @@ public abstract class Player extends AnimatedSprite
                 {
                     onDie();
                 }
-                body.setLinearVelocity(new Vector2(2,2));
+
                 if (canRun)
                 {
                     if (footContacts < 1)
