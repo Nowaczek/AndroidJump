@@ -11,6 +11,9 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 /**
  * Created by Prezes on 2015-11-27.
  */
@@ -58,27 +61,63 @@ public float x= 0f;
         body.setUserData("player");
         body.setFixedRotation(true);
 
-        physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, false)
-        {
+        physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, false) {
             @Override
             public void onUpdate(float pSecondsElapsed) {
                 super.onUpdate(pSecondsElapsed);
                 camera.onUpdate(0.1f);
 
-
+                odczytpozycjy();
 
                 if (getY() <= 0) {
                     onDie();
                 }
-                if(x!=0)
-                {
+                if (x >0.5 || x <-0.5) {
 
-                    move(x);
+                    if (footContacts < 1)
+                    {
+                        move(x);
+                    }
+
                 }
+                jump();
 
             }
 
         });
+    }
+
+    private void odczytpozycjy() {
+
+        try {
+            FileInputStream fis = new FileInputStream( "data/data/com.game.prezes.game/files/pozycja.txt");
+
+            StringBuilder builder = new StringBuilder();
+            int ch;
+            while((ch = fis.read()) != -1){
+                builder.append((char)ch);
+            }
+            String a= String.valueOf(builder);
+            try {
+                x = Float.parseFloat(a);
+                x*=2.5f;
+            }
+            catch(Exception e)
+            {
+                x=0;
+            }
+
+
+            fis.close();
+
+
+            //Toast.makeText(getApplicationContext(), builder, Toast.LENGTH_SHORT).show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setRunning()
@@ -102,8 +141,12 @@ public float x= 0f;
         {
             return;
         }
+        else
+        {
         body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 45));
+        }
     }
+
 
     public void increaseFootContacts()
     {

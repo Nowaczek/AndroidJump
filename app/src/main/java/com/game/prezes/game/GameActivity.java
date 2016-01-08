@@ -17,7 +17,7 @@ import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -95,20 +95,27 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
        text  = String.valueOf(pAccelerationData.getValues()[0]);
 
 
-String FILENAME = "pozycja.txt";
 
 
 
-        FileOutputStream fos = null;
+
+
+
+
+
+
         try {
+            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "pozycja.txt"));
 
-            fos = openFileOutput(FILENAME,0);
+
+
+            //fos = openFileOutput(FILENAME,0);
             fos.write(text.getBytes());
             fos.close();
 
 
 
-           // Toast.makeText(getApplicationContext(), "zapisano", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -119,29 +126,13 @@ String FILENAME = "pozycja.txt";
 
 
 
-        FileInputStream fis = null;
 
-        try {
-            fis = new FileInputStream(FILENAME);
-
-
-
-            int content;
-            content = fis.read() ;
-            fis.close();
-                // convert to char and display it
-
-                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
 
 
 
         ////////////////////
+
+
 
 
 
