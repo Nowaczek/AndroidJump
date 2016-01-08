@@ -74,6 +74,7 @@ public class ResourcesManager
         loadMenuGraphics();
         loadMenuAudio();
         loadMenuFonts();
+
     }
 
     public void loadGameResources()
@@ -81,6 +82,7 @@ public class ResourcesManager
         loadGameGraphics();
         loadGameFonts();
         loadGameAudio();
+
     }
 
     private void loadMenuGraphics()

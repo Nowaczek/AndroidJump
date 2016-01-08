@@ -39,7 +39,7 @@ import org.xml.sax.Attributes;
 
 import java.io.IOException;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener
+public class GameScene extends BaseScene implements  IOnSceneTouchListener
 {
     private int score = 0;
 
@@ -62,10 +62,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
     private Player player;
 
+
     private Text gameOverText;
     private boolean gameOverDisplayed = false;
 
-    private boolean firstTouch = false;
 
     @Override
     public void createScene()
@@ -79,7 +79,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         levelCompleteWindow = new LevelCompleteWindow(vbom);
 
         setOnSceneTouchListener(this);
+
     }
+
+
 
     @Override
     public void onBackKeyPressed()
@@ -112,6 +115,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
 
                 player.jump();
+
 
         }
         return false;
@@ -189,6 +193,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
                 {
                     player = new Player(x, y, vbom, camera, physicsWorld)
                     {
+
+
                         @Override
                         public void onDie()
                         {
@@ -342,5 +348,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         };
         return contactListener;
     }
+
+
+
 }
 

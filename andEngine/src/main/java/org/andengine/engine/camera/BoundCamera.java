@@ -29,6 +29,7 @@ public class BoundCamera extends Camera {
 	protected float mBoundsWidth;
 	protected float mBoundsHeight;
 
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================

@@ -1,6 +1,7 @@
 package com.game.prezes.game;
 
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -12,19 +13,21 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.input.sensor.acceleration.AccelerationData;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * @author Mateusz Mysliwiec
- * @author www.matim-dev.com
- * @version 1.0
- */
-public class GameActivity extends BaseGameActivity
-{
+
+public class GameActivity extends BaseGameActivity implements IAccelerationListener {
     private BoundCamera camera;
     private ResourcesManager resourcesManager;
+    public String text="0";
+
 
     public EngineOptions onCreateEngineOptions()
     {
@@ -35,11 +38,14 @@ public class GameActivity extends BaseGameActivity
         return engineOptions;
     }
 
+
+
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException
     {
         ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
         resourcesManager = ResourcesManager.getInstance();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
+        this.enableAccelerationSensor(this);
     }
 
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException
@@ -50,10 +56,8 @@ public class GameActivity extends BaseGameActivity
 
     public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws IOException
     {
-        mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback()
-        {
-            public void onTimePassed(final TimerHandler pTimerHandler)
-            {
+        mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback() {
+            public void onTimePassed(final TimerHandler pTimerHandler) {
                 mEngine.unregisterUpdateHandler(pTimerHandler);
                 SceneManager.getInstance().createMenuScene();
             }
@@ -80,4 +84,73 @@ public class GameActivity extends BaseGameActivity
         }
         return false;
     }
+
+    @Override
+    public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
+
+    }
+
+    @Override
+    public void onAccelerationChanged(AccelerationData pAccelerationData) {
+       text  = String.valueOf(pAccelerationData.getValues()[0]);
+
+
+String FILENAME = "pozycja.txt";
+
+
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = openFileOutput(FILENAME,0);
+            fos.write(text.getBytes());
+            fos.close();
+
+
+
+           // Toast.makeText(getApplicationContext(), "zapisano", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(FILENAME);
+
+
+
+            int content;
+            content = fis.read() ;
+            fis.close();
+                // convert to char and display it
+
+                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        ////////////////////
+
+
+
+
+
+
+
+
+
+    }
+
 }

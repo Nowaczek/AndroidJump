@@ -14,7 +14,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 /**
  * Created by Prezes on 2015-11-27.
  */
-public abstract class Player extends AnimatedSprite 
+public abstract class Player extends AnimatedSprite
 {
     // ---------------------------------------------
     // VARIABLES
@@ -22,9 +22,14 @@ public abstract class Player extends AnimatedSprite
 
     private Body body;
 
+
     private boolean canRun = false;
 
     private int footContacts = 0;
+public float x= 0f;
+
+
+
 
     // ---------------------------------------------
     // CONSTRUCTOR
@@ -35,7 +40,12 @@ public abstract class Player extends AnimatedSprite
         super(pX, pY, ResourcesManager.getInstance().player_region, vbo);
         createPhysics(camera, physicsWorld);
         camera.setChaseEntity(this);
+
+
+
     }
+
+
 
     // ---------------------------------------------
     // CLASS LOGIC
@@ -51,31 +61,21 @@ public abstract class Player extends AnimatedSprite
         physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, false)
         {
             @Override
-            public void onUpdate(float pSecondsElapsed)
-            {
+            public void onUpdate(float pSecondsElapsed) {
                 super.onUpdate(pSecondsElapsed);
                 camera.onUpdate(0.1f);
 
-                if (getY() <= 0)
-                {
+
+
+                if (getY() <= 0) {
                     onDie();
                 }
+                if(x!=0)
+                {
 
-                if (canRun)
-                {
-                    if (footContacts < 1)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
-                    }
+                    move(x);
                 }
-                if (canRun)
-                {
-                    body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
-                }
+
             }
 
         });
@@ -89,6 +89,12 @@ public abstract class Player extends AnimatedSprite
 
         animate(PLAYER_ANIMATE, 0, 2, true);
     }
+
+    public void move(Float x)
+    {
+
+        body.setLinearVelocity(new Vector2(x, body.getLinearVelocity().y));
+          }
 
     public void jump()
     {
@@ -110,4 +116,8 @@ public abstract class Player extends AnimatedSprite
     }
 
     public abstract void onDie();
+
+
+
+
 }
