@@ -1,7 +1,6 @@
 package com.game.prezes.game;
 
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -115,13 +114,13 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
 
 
 
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
 
 

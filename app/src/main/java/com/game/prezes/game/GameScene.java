@@ -80,6 +80,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
         setOnSceneTouchListener(this);
 
+
     }
 
 
@@ -113,9 +114,14 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         {
 
 
+                    if(player.canRun==false) {
+                        player.jump();
+                        player.canRun = true;
+                    }
+            else
+                    {
 
-                player.jump();
-
+                    }
 
         }
         return false;
@@ -159,7 +165,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                 else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2))
                 {
                     levelObject = new Sprite(x, y, resourcesManager.platform2_region, vbom);
-                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyDef.BodyType.StaticBody, FIXTURE_DEF);
+                    final Body body =
+                    PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyDef.BodyType.StaticBody, FIXTURE_DEF);
                     body.setUserData("platform2");
                     physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
                 }
@@ -304,7 +311,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
                     if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player"))
                     {
-                        engine.registerUpdateHandler(new TimerHandler(0.2f, new ITimerCallback()
+                        engine.registerUpdateHandler(new TimerHandler(1f, new ITimerCallback()
                         {
                             public void onTimePassed(final TimerHandler pTimerHandler)
                             {

@@ -1,5 +1,7 @@
 package com.game.prezes.game;
 
+import android.util.Log;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,7 +28,7 @@ public abstract class Player extends AnimatedSprite
     private Body body;
 
 
-    private boolean canRun = false;
+    public boolean canRun = false;
 
     private int footContacts = 0;
 public float x= 0f;
@@ -67,22 +69,47 @@ public float x= 0f;
                 super.onUpdate(pSecondsElapsed);
                 camera.onUpdate(0.1f);
 
-                odczytpozycjy();
 
+                odczytpozycjy();
                 if (getY() <= 0) {
                     onDie();
                 }
-                if (x >0.5 || x <-0.5) {
+            if(canRun==true) {
+                if (x > 0.5 || x < -0.5) {
 
-                    if (footContacts < 1)
-                    {
+                    if (footContacts < 1) {
                         move(x);
                     }
 
                 }
-                jump();
+                Log.d("Predkosc x", "Log Message" + body.getLinearVelocity().y);
+                if (body.getLinearVelocity().y < 0) {
+                    for (int i = 0; i < getBody().getFixtureList().size(); i++) {
+                        this.getBody().getFixtureList().get(i).setSensor(false);
+
+                    }
+                    jump();
+                } else {
+                    for (int i = 0; i < getBody().getFixtureList().size(); i++) {
+                        this.getBody().getFixtureList().get(i).setSensor(true);
+                    }
+
+                }
+                if (body.getLinearVelocity().y >50) {
+
+                    for (int i = 0; i < getBody().getFixtureList().size(); i++) {
+                        this.getBody().getFixtureList().get(i).setSensor(false);
+                    }
+                    onDie();
+
+
+                }
 
             }
+
+
+
+                        }
 
         });
     }
@@ -144,6 +171,7 @@ public float x= 0f;
         else
         {
         body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 45));
+
         }
     }
 
@@ -159,6 +187,9 @@ public float x= 0f;
     }
 
     public abstract void onDie();
+
+
+
 
 
 
