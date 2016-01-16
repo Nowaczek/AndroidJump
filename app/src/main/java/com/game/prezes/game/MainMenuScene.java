@@ -1,5 +1,7 @@
 package com.game.prezes.game;
 
+import android.util.Log;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -19,9 +21,14 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     private MenuScene menuChildScene;
 
-    private final int MENU_PLAY = 0;
-    private final int MENU_OPTIONS = 1;
 
+    private final int MENU_PLAY = 0;
+    private final int MENU_LOGIN = 1;
+
+    //-----------------
+    //      0-pierwsze
+    //      1-pokaz ze zalogowany
+    //      2-pokaz ze nie zalogowany
     //---------------------------------------------
     // METHODS FROM SUPERCLASS
     //---------------------------------------------
@@ -29,8 +36,40 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     @Override
     public void createScene()
     {
+
         createBackground();
-        createMenuChildScene();
+
+
+            if(ResourcesManager.getInstance().activity.fbchecklogin()==true)
+            {
+                ResourcesManager.getInstance().activity.iflogin=1;
+
+            }
+            else
+            {
+                ResourcesManager.getInstance().activity.iflogin=2;
+
+            }
+
+        if(ResourcesManager.getInstance().activity.iflogin==1)
+        {
+            createMenuChildScene(1);
+
+            ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ResourcesManager.getInstance().activity.hello();
+                }
+            });
+
+
+        }
+        if(ResourcesManager.getInstance().activity.iflogin==2)
+        {
+            createMenuChildScene(0);
+        }
+
+
     }
 
     @Override
@@ -52,6 +91,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         // TODO Auto-generated method stub
     }
 
+
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY)
     {
         switch(pMenuItem.getID())
@@ -60,7 +100,45 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 //Load Game Scene!
                 SceneManager.getInstance().loadGameScene(engine);
                 return true;
-            case MENU_OPTIONS:
+            case MENU_LOGIN:
+                if(ResourcesManager.getInstance().activity.iflogin==1)
+                {
+
+                    ResourcesManager.getInstance().activity.fblogout();
+                    createScene();
+                }
+                else
+                {
+
+                    ResourcesManager.getInstance().activity.fblogin();
+
+                    ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            do {
+                                Log.e("check", "check reply");
+
+                            }
+
+                            while (ResourcesManager.getInstance().activity.errorcode == 0);
+
+                            if (ResourcesManager.getInstance().activity.errorcode == 1)
+                            {
+                                createScene();
+                            } else {
+
+                            }
+                        }
+                    });
+
+
+
+
+
+
+
+                }
+
 
 
                 return true;
@@ -86,25 +164,40 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         });
     }
 
-    private void createMenuChildScene()
+    private void createMenuChildScene(Integer iflogin)
     {
+
+
+
+
         menuChildScene = new MenuScene(camera);
         menuChildScene.setPosition(0, 0);
 
         final IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region, vbom), 1.2f, 1);
-        final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OPTIONS, resourcesManager.options_region, vbom), 1.2f, 1);
+        final IMenuItem loginMenuItem;
 
+
+        if(iflogin==1)
+        {
+
+             loginMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_LOGIN, resourcesManager.logout_region, vbom), 1.2f, 1);
+        }
+        else
+        {
+             loginMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_LOGIN, resourcesManager.login_region, vbom), 1.2f, 1);
+        }
         menuChildScene.addMenuItem(playMenuItem);
-        menuChildScene.addMenuItem(optionsMenuItem);
+        menuChildScene.addMenuItem(loginMenuItem);
 
         menuChildScene.buildAnimations();
         menuChildScene.setBackgroundEnabled(false);
 
         playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 100);
-        optionsMenuItem.setPosition(optionsMenuItem.getX(), optionsMenuItem.getY() - 110);
+        loginMenuItem.setPosition(loginMenuItem.getX(), loginMenuItem.getY() - 110);
 
         menuChildScene.setOnMenuItemClickListener(this);
 
         setChildScene(menuChildScene);
     }
+
 }

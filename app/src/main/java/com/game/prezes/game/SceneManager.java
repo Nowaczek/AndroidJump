@@ -82,6 +82,10 @@ public class SceneManager
         SceneManager.getInstance().setScene(menuScene);
         disposeSplashScene();
     }
+    public void fbconnect()
+    {
+
+    }
 
     public void createSplashScene(IGameInterface.OnCreateSceneCallback pOnCreateSceneCallback)
     {

@@ -1,6 +1,31 @@
 package com.game.prezes.game;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -14,19 +39,40 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
 
 
 public class GameActivity extends BaseGameActivity implements IAccelerationListener {
     private BoundCamera camera;
     private ResourcesManager resourcesManager;
-    public String text="0";
+    public Float pozycjax=0f;
+    public Integer iflogin=0;
+    public Integer errorcode=0;
 
+
+
+
+    ///////FB
+
+    String name_profile;
+    String id_profile;
+
+    public ITextureRegion profilepicture;
+
+
+
+public CallbackManager mCallbackManager;
 
     public EngineOptions onCreateEngineOptions()
     {
@@ -49,6 +95,10 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
 
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException
     {
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+
+
         SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 
     }
@@ -84,6 +134,257 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
         return false;
     }
 
+
+
+
+    public boolean fbchecklogin()
+    {
+        if(AccessToken.getCurrentAccessToken() != null)
+        {
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
+
+    public void fbloadprofile()
+    {
+        if(AccessToken.getCurrentAccessToken() != null){
+            try {
+                FileInputStream fis = new FileInputStream(getFilesDir()+"/profil.txt");
+
+                StringBuilder builder = new StringBuilder();
+                int ch;
+                while((ch = fis.read()) != -1){
+                    builder.append((char)ch);
+                }
+                String[] open= String.valueOf(builder).split(";");
+                name_profile=open[1];
+                id_profile=open[0];
+
+
+
+                fis.close();
+
+                Log.e("fbload profile",open[0]+"+"+open[1]);
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+               Log.e("error fbload",e.toString());
+            }
+
+
+        }
+    }
+    public void fblogin()
+    {
+        errorcode=0;
+        Log.d("FB", "klasa otwarta");
+
+
+        LoginManager.getInstance().registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("Success", "Login");
+                        RequestData();
+
+
+                        errorcode=1;
+
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d("FB", "cancel");
+                        errorcode=2;
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Log.d("FB", "error");
+                        errorcode=2;
+                    }
+                });
+
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+        if(errorcode==0)
+        {
+            errorcode=2;
+        }
+
+    }
+    public static Bitmap getFacebookProfilePicture(String userID){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        try {
+            URL imageURL = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
+
+            Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+            return bitmap;
+        } catch (Exception e) {
+            Log.e("error download picture",e.toString());
+        }
+
+        return null;
+
+    }
+    public void fblogout()
+    {
+        LoginManager.getInstance().logOut();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mCallbackManager.onActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+    }
+
+    public void RequestData(){
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object,GraphResponse response) {
+
+                JSONObject json = response.getJSONObject();
+                try {
+                    if(json != null){
+
+                        String id=(json.getString("id"));
+                        String name = json.getString("name");
+                        FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "profil.txt"));
+                        String saveprofile = id+";"+name;
+                        fos.write(saveprofile.getBytes());
+                        fos.close();
+                        Log.d("saved", "profile saved");
+                        Bitmap bitmap = getFacebookProfilePicture(json.getString("id"));
+                        SaveImage(bitmap);
+
+
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        request.executeAsync();
+
+    }
+
+    private void SaveImage(Bitmap finalBitmap) {
+
+
+        File myDir = new File(String.valueOf("data/data/com.game.prezes.game/files/"));
+
+        myDir.mkdirs();
+
+        String fname = "profile";
+        File file = new File(myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 50, out);
+            out.flush();
+            out.close();
+            Log.i("img","saved");
+
+        } catch (Exception e) {
+           Log.e("image",e.toString());
+        }
+        //"data/data/com.example.hello.klik/files/pozycja.jpg"
+
+
+
+
+
+    }
+
+
+    public void hello()
+    {
+
+        fbloadprofile();
+        try {
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialog","dialog was created");
+            dialog.setContentView(R.layout.custom);
+
+            dialog.setTitle("HI "+name_profile+"!!");
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+            text.setText("It's nice to see you!");
+            ImageView image = (ImageView) dialog.findViewById(R.id.image);
+            image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+            catch(Exception e)
+            {
+                Log.e("error", e.toString());
+            }
+
+
+    }
+
+    public void alertdialog() {
+
+        final Context context = this;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        // set title
+        alertDialogBuilder.setTitle("Error");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("testdialog")
+                .setCancelable(false)
+                .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "kliknales tak", Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "kliknales tak", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+
+    }
     @Override
     public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
 
@@ -91,52 +392,7 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
 
     @Override
     public void onAccelerationChanged(AccelerationData pAccelerationData) {
-       text  = String.valueOf(pAccelerationData.getValues()[0]);
-
-
-
-
-
-
-
-
-
-
-
-        try {
-            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "pozycja.txt"));
-
-
-
-            //fos = openFileOutput(FILENAME,0);
-            fos.write(text.getBytes());
-            fos.close();
-
-
-
-           // Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-          //  Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-           // Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
-
-
-
-        ////////////////////
-
-
-
-
-
-
-
+       pozycjax  = pAccelerationData.getValues()[0];
 
 
 

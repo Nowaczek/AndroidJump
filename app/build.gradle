@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.game.prezes.game"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -18,10 +18,15 @@ android {
         }
     }
 }
+repositories {
+    jcenter()       // This is the default repo
+    mavenCentral()  //  This is the Maven Central repo
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile project(':andEngine')
     compile project(':andengine-qyroscope')
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
 }

@@ -13,9 +13,6 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
 /**
  * Created by Prezes on 2015-11-27.
  */
@@ -31,7 +28,7 @@ public abstract class Player extends AnimatedSprite
     public boolean canRun = false;
 
     private int footContacts = 0;
-public float x= 0f;
+    public float x= 0f;
 
 
 
@@ -116,17 +113,9 @@ public float x= 0f;
 
     private void odczytpozycjy() {
 
-        try {
-            FileInputStream fis = new FileInputStream( "data/data/com.game.prezes.game/files/pozycja.txt");
 
-            StringBuilder builder = new StringBuilder();
-            int ch;
-            while((ch = fis.read()) != -1){
-                builder.append((char)ch);
-            }
-            String a= String.valueOf(builder);
             try {
-                x = Float.parseFloat(a);
+                x = ResourcesManager.getInstance().activity.pozycjax;
                 x*=2.5f;
             }
             catch(Exception e)
@@ -135,16 +124,8 @@ public float x= 0f;
             }
 
 
-            fis.close();
 
 
-            //Toast.makeText(getApplicationContext(), builder, Toast.LENGTH_SHORT).show();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void setRunning()

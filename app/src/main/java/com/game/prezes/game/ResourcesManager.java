@@ -46,7 +46,9 @@ public class ResourcesManager
     public ITextureRegion splash_region;
     public ITextureRegion menu_background_region;
     public ITextureRegion play_region;
-    public ITextureRegion options_region;
+    public ITextureRegion login_region;
+    public ITextureRegion logout_region;
+
 
     // Game Texture
     public BuildableBitmapTextureAtlas gameTextureAtlas;
@@ -85,13 +87,15 @@ public class ResourcesManager
 
     }
 
+
     private void loadMenuGraphics()
     {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
         menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
         menu_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
         play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
-        options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "options.png");
+        login_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "fblogin.png");
+        logout_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "fblogout.png");
 
         try
         {
