@@ -1,0 +1,24 @@
+1.1 interaktywne aplikacje 2d
+ui
+sterowanie
+aktorzy
+obiekty
+interakcja
+grafika
+dzwiek
+urzadzenia
+wykorzestanie akcelerometru
+2 projekt aplikacji (opis funkcjonalnosci - cele, specyfikacja, schemat aplikacji) (wszystko co nie jest kodem)
+2.1 charakterystyka aktorow
+2.2 obiekty wystepujace w grze
+2.3 interfejs graficzny
+2.4 interfejs interaktywny
+3. Implementacja 
+4. testy wydajnosciowe i funkcjonalne (fps, przykladowe przebiegi rozgrywek, ram, zuzycie zasobow, wpływ konkretnych stanow gry na zasoby urzadzenia, czy ma to wplyw na komfort gry, różne docelowe FPS, rozdzielczość, różne telefony, eksperymenty z różnymi rozdzielczościami i FPS)
+5. zakonczenie, podsumowanie
+
+??:
+model rzeczywistosci
+
+done:
+1.2 cel i zakres pracy
