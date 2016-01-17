@@ -67,14 +67,21 @@ public abstract class Player extends AnimatedSprite
                 camera.onUpdate(0.1f);
 
 
+                if(Math.round(getY())>Math.round(ResourcesManager.getInstance().activity.score))
+                {
+                    ResourcesManager.getInstance().activity.score=Math.round(getY());
+                }
+
                 odczytpozycjy();
                 if (getY() <= 0) {
+
                     onDie();
                 }
             if(canRun==true) {
                 if (x > 0.5 || x < -0.5) {
 
-                    if (footContacts < 1) {
+                    if (footContacts < 1)
+                    {
                         move(x);
                     }
 
@@ -92,10 +99,11 @@ public abstract class Player extends AnimatedSprite
                     }
 
                 }
-                if (body.getLinearVelocity().y >50) {
+                if (body.getLinearVelocity().y < -70) {
 
                     for (int i = 0; i < getBody().getFixtureList().size(); i++) {
                         this.getBody().getFixtureList().get(i).setSensor(false);
+
                     }
                     onDie();
 
@@ -116,7 +124,7 @@ public abstract class Player extends AnimatedSprite
 
             try {
                 x = ResourcesManager.getInstance().activity.pozycjax;
-                x*=2.5f;
+                x*=2.7f;
             }
             catch(Exception e)
             {
@@ -127,34 +135,53 @@ public abstract class Player extends AnimatedSprite
 
 
     }
-
-    public void setRunning()
+    public boolean iffalldown()
     {
+        if (body.getLinearVelocity().y < 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public void setRunning() {
         canRun = true;
 
-        final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
-
-        animate(PLAYER_ANIMATE, 0, 2, true);
+        final long[] PLAYER_ANIMATE = new long[]{100, 100, 100};
     }
+
 
     public void move(Float x)
     {
 
         body.setLinearVelocity(new Vector2(x, body.getLinearVelocity().y));
-          }
+    }
+
+
 
     public void jump()
-    {
-        if (footContacts < 1)
         {
-            return;
+        if(footContacts<1)
+        {
+        return;
         }
         else
         {
-        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 45));
-
+        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x,45));
         }
+        }
+
+
+    public void jumpextra()
+    {
+
+            body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 80));
+
+
     }
+
 
 
     public void increaseFootContacts()

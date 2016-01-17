@@ -1,5 +1,6 @@
 package com.game.prezes.game;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
@@ -54,6 +55,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         if(ResourcesManager.getInstance().activity.iflogin==1)
         {
             createMenuChildScene(1);
+
 
             ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
                 @Override
@@ -110,26 +112,12 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 else
                 {
 
+
+
                     ResourcesManager.getInstance().activity.fblogin();
+                    new waiting().execute();
 
-                    ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            do {
-                                Log.e("check", "check reply");
 
-                            }
-
-                            while (ResourcesManager.getInstance().activity.errorcode == 0);
-
-                            if (ResourcesManager.getInstance().activity.errorcode == 1)
-                            {
-                                createScene();
-                            } else {
-
-                            }
-                        }
-                    });
 
 
 
@@ -198,6 +186,36 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuChildScene.setOnMenuItemClickListener(this);
 
         setChildScene(menuChildScene);
+
+
+
+    }
+    private class waiting extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            do {
+                Log.i("waitin", "forerrorcode");
+
+
+            }
+            while (ResourcesManager.getInstance().activity.errorcode == 0) ;
+            return "1";
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            if (ResourcesManager.getInstance().activity.errorcode == 1) {
+                createScene();
+            } else {
+
+            }
+
+
+
+        }
     }
 
 }

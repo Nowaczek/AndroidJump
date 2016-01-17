@@ -51,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Random;
 
 
 public class GameActivity extends BaseGameActivity implements IAccelerationListener {
@@ -59,6 +60,11 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
     public Float pozycjax=0f;
     public Integer iflogin=0;
     public Integer errorcode=0;
+
+
+    //level varable
+    public float score = 0;
+    public float lastlevel = 0;
 
 
 
@@ -95,6 +101,9 @@ public CallbackManager mCallbackManager;
 
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException
     {
+
+        score = 0;
+        Log.d("savefolder", getFilesDir().toString());
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
 
@@ -155,7 +164,7 @@ public CallbackManager mCallbackManager;
         if(AccessToken.getCurrentAccessToken() != null){
             try {
                 FileInputStream fis = new FileInputStream(getFilesDir()+"/profil.txt");
-
+                Log.d("savefolder",getFilesDir().toString());
                 StringBuilder builder = new StringBuilder();
                 int ch;
                 while((ch = fis.read()) != -1){
@@ -193,31 +202,26 @@ public CallbackManager mCallbackManager;
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
                         RequestData();
-
-
-                        errorcode=1;
-
+                        errorcode = 1;
 
                     }
 
                     @Override
                     public void onCancel() {
                         Log.d("FB", "cancel");
-                        errorcode=2;
+                        errorcode = 2;
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         Log.d("FB", "error");
-                        errorcode=2;
+                        errorcode = 2;
                     }
+
                 });
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
-        if(errorcode==0)
-        {
-            errorcode=2;
-        }
+
 
     }
     public static Bitmap getFacebookProfilePicture(String userID){
@@ -244,6 +248,7 @@ public CallbackManager mCallbackManager;
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(mCallbackManager.onActivityResult(requestCode, resultCode, data)) {
+
             return;
         }
     }
@@ -319,7 +324,7 @@ public CallbackManager mCallbackManager;
         fbloadprofile();
         try {
             final Dialog dialog = new Dialog(this);
-            Log.i("dialog","dialog was created");
+            Log.i("dialog", "dialog was created");
             dialog.setContentView(R.layout.custom);
 
             dialog.setTitle("HI "+name_profile+"!!");
@@ -384,6 +389,156 @@ public CallbackManager mCallbackManager;
         alertDialog.show();
 
 
+    }
+    public void generatemap()
+    {
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "map.lvl"));
+            String levelmap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                    "\t<level width=\"480\" height=\"20000\">\n"+
+                    "\t<entity x=\"60\" y=\"16\" type=\"platform1\"/>\n";
+            String coinmap="";
+            Random rand = new Random();
+            Integer counterplatform;
+            Integer platform;
+            Integer x=0;
+            Integer lastx=40;
+            Integer y=40;
+
+            Integer y_temp;
+            Integer x_temp;
+            Integer coin;
+
+            for(int i =0;i<10;i++)
+            {
+                y+=rand.nextInt((270 - 139) + 1) + 139;
+                counterplatform =rand.nextInt((2 - 1) + 1) + 1;
+                for(int j =0;j<counterplatform;j++)
+                {
+                    if(j==0)
+                    {
+                        do {
+                            x = rand.nextInt((450 - 39) + 1) + 41;
+                        }
+                        while ((x<lastx-150)&&(x>lastx+150));
+                        lastx=x;
+                        platform =rand.nextInt((3 - 1) + 1) + 1;
+                        coin= rand.nextInt((100 - 1) + 1) + 1;
+
+                        if(platform==1)
+                        {
+                            if(coin>0)
+                            {
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
+                                y_temp=y+50;
+                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
+                            }
+                            else
+                            {
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
+
+                            }
+                        }
+                        else
+                        {
+                            if(coin>0)
+                            {
+                                x_temp=x+52;
+                                y_temp=y+11;
+                                levelmap+="\t<entity x=\""+x_temp+"\" y=\""+y_temp+"\" type=\"platform"+platform+"\"/>\n";
+
+                                y_temp=y+50;
+                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
+                            }
+                            else
+                            {
+                                x_temp=x+52;
+                                y_temp=y+11;
+                                levelmap+="\t<entity x=\""+x_temp+"\" y=\""+y_temp+"\" type=\"platform"+platform+"\"/>\n";
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        do {
+                            x = rand.nextInt((450 - 39) + 1) + 41;
+                        }
+                        while ((x<(lastx+150))&&(x>(lastx-150)));
+                        lastx=x;
+                        platform =rand.nextInt((3 - 1) + 1) + 1;
+                        coin= rand.nextInt((100 - 1) + 1) + 1;
+
+                        if(platform==1)
+                        {
+                            if(coin>0)
+                            {
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
+                                y_temp=y+50;
+                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
+                            }
+                            else
+                            {
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
+
+                            }
+                        }
+                        else
+                        {
+                            if(coin>0)
+                            {
+                                x_temp=x+52;
+                                y_temp=y+11;
+                                levelmap+="\t<entity x=\""+x_temp+"\" y=\""+y_temp+"\" type=\"platform"+platform+"\"/>\n";
+
+                                y_temp=y+50;
+                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
+                            }
+                            else
+                            {
+                                x_temp=x+52;
+                                y_temp=y+11;
+                                levelmap+="\t<entity x=\""+x_temp+"\" y=\""+y_temp+"\" type=\"platform"+platform+"\"/>\n";
+
+                            }
+
+                        }
+                    }
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+            }
+            y+=150;
+            levelmap+=coinmap+
+                                "\t<entity x=\"240\" y=\""+y+"\" type=\"levelComplete\"/>\n" +
+                                "\t<entity x=\"60\" y=\"30\" type=\"player\"/>\n" +
+                                "</level>";
+
+
+            fos.write(levelmap.getBytes());
+            fos.close();
+            Log.d("saved", "profile saved");
+        }
+        catch(Exception e)
+        {
+
+        }
+
+    }
+    public void show(String text)
+    {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
