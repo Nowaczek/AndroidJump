@@ -111,6 +111,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         camera.setChaseEntity(null); //TODO
         camera.setCenter(240, 400);
 
+
         // TODO code responsible for disposing scene
         // removing all game scene objects.
     }
@@ -212,6 +213,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                         public void onDie() {
                             end=true;
                             move(-1000f);
+                            detachSelf();
+
                             if (!gameOverDisplayed) {
                                 displayGameOverText();
                             }
@@ -231,13 +234,25 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                             setResult();
                             if (player.collidesWith(this)) {
 
-
+                                ResourcesManager.getInstance().activity.lastlevel+=ResourcesManager.getInstance().activity.score;
+                                ResourcesManager.getInstance().activity.score=0;
                                 /*
                                todo
                                levelCompleteWindow.display(LevelCompleteWindow.StarsCount.TWO, GameScene.this, camera);
+                               for (int i = 0; i < getBody().getFixtureList().size(); i++) {
+                                    this.getBody().getFixtureList().get(i).setSensor(false);
+
+                                }
                                */
+
                                 this.setVisible(false);
                                 this.setIgnoreUpdate(true);
+
+
+
+
+
+
                             }
                         }
                     };

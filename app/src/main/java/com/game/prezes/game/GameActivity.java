@@ -394,54 +394,58 @@ public CallbackManager mCallbackManager;
     {
         try {
             FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "map.lvl"));
+            //string okresjalacy mape platform
             String levelmap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                     "\t<level width=\"480\" height=\"20000\">\n"+
-                    "\t<entity x=\"60\" y=\"16\" type=\"platform1\"/>\n";
+                    "\t<entity x=\"60\" y=\"16\" type=\"platform1\"/>\n";//dodanie wstepu pliku w formacie XML podanie rozmiaru mapy i pierwszej platformy na ktorej bedzie stal playter
+            //string okreslajacy mape monet
             String coinmap="";
+
             Random rand = new Random();
-            Integer counterplatform;
-            Integer platform;
-            Integer x=0;
-            Integer lastx=40;
-            Integer y=40;
 
-            Integer y_temp;
-            Integer x_temp;
-            Integer coin;
+            Integer counterplatform;        //liczba platform na danym poziomie
+            Integer platform;               //liczba okreslajaca typ platformy
+            Integer x=0;                    //pozycja x
+            Integer lastx=40;               //pozycja ostatniej platformy w osi x
+            Integer y=40;                   //pozycja w osi y
 
-            for(int i =0;i<10;i++)
+            Integer y_temp;                 //zmienna ktora poprawia pozycje w osi y
+            Integer x_temp;                 //zmienna ktora poprawia pozycje w osi x
+            Integer coin;                   //zmienna okresjalaca stworzenie monety
+
+            for(int i =0;i<10;i++)                                                                                       //petla odpowiedzialna za liczbe "pieter"
             {
-                y+=rand.nextInt((270 - 139) + 1) + 139;
-                counterplatform =rand.nextInt((2 - 1) + 1) + 1;
-                for(int j =0;j<counterplatform;j++)
+                y+=rand.nextInt((270 - 139) + 1) + 139;                                                                  //kolejna wysokosc "pietra" z przedzialu 140 - 270
+                counterplatform =rand.nextInt((2 - 1) + 1) + 1;                                                          //ilosc platform na danym poziomie
+                for(int j =0;j<counterplatform;j++)                                                                      //petla odpowiedzialna za liczbe platform na danym poziomie
                 {
-                    if(j==0)
+                    if(j==0)                                                                                             //pierwsza platforma na nowym poziomie
                     {
                         do {
-                            x = rand.nextInt((450 - 39) + 1) + 41;
+                            x = rand.nextInt((450 - 39) + 1) + 41;                                                        // losowanie pozycji x danej platformy
                         }
-                        while ((x<lastx-150)&&(x>lastx+150));
+                        while ((x<lastx-100)&&(x>lastx+100));                                                             // waronek sprawdzajacy aby ta platforma nie byla zbyt daleko ostatniej platformy z poprzedniego poziomu
                         lastx=x;
-                        platform =rand.nextInt((3 - 1) + 1) + 1;
-                        coin= rand.nextInt((100 - 1) + 1) + 1;
+                        platform =rand.nextInt((3 - 1) + 1) + 1;                                                          // rodzaj platformy 1.stala 2.spadajaca po czasie 3. spadajaca od razu
+                        coin= rand.nextInt((100 - 1) + 1) + 1;                                                            // losowanie prawdopodobienstwa wystapienia monety
 
-                        if(platform==1)
+                        if(platform==1)                                                                                    //jezeli platforma stala
                         {
-                            if(coin>0)
+                            if(coin>0)                                                                                     //ustalanie ptawdopodobienstwa wystapienia monety
                             {
-                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
-                                y_temp=y+50;
-                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";           //dodanie do stringu mapy kojna platforme
+                                y_temp=y+50;                                                                                //temp ustala poprawiona pozycje
+                                coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;                      //dodanie do stringu monet pozycje danej monety
                             }
                             else
                             {
-                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
+                                levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";            //bez monety jest dodawana tylko platforma
 
                             }
                         }
-                        else
+                        else                                                                                                //to samo co powyzej, lecz tutaj sa tworzone platformy rodzaju 2 i 3 ktore wymagaja poprawionej pozycji, inaczej nakladaly by sie
                         {
-                            if(coin>0)
+                            if(coin>0)                                                                                      //platforma z moneta
                             {
                                 x_temp=x+52;
                                 y_temp=y+11;
@@ -450,7 +454,7 @@ public CallbackManager mCallbackManager;
                                 y_temp=y+50;
                                 coinmap+= "\t<entity x=\""+x+"\" y=\""+y_temp+"\" type=\"coin\"/>\n" ;
                             }
-                            else
+                            else                                                                                            //bez monety
                             {
                                 x_temp=x+52;
                                 y_temp=y+11;
@@ -460,12 +464,12 @@ public CallbackManager mCallbackManager;
 
                         }
                     }
-                    else
+                    else                                                                                                    //tutaj jest to samo co dla loowania pierwszej platformy w danym "poziomie" tyle, ze pozycja x...
                     {
                         do {
                             x = rand.nextInt((450 - 39) + 1) + 41;
                         }
-                        while ((x<(lastx+150))&&(x>(lastx-150)));
+                        while ((x<(lastx+150))&&(x>(lastx-150)));                                                          //...jest losowana tak aby platformy nie nakladaly sie
                         lastx=x;
                         platform =rand.nextInt((3 - 1) + 1) + 1;
                         coin= rand.nextInt((100 - 1) + 1) + 1;
@@ -519,11 +523,11 @@ public CallbackManager mCallbackManager;
                 }
 
             }
-            y+=150;
-            levelmap+=coinmap+
+            y+=150;//y jest zwiekszony po to aby gwiazda zakonczenia byla troche wyzej niz ostatni "poziom"
+            levelmap+=coinmap+                                                                  // kolejnosc jest scisle ustawiona najpierw platformy, potem monety
                                 "\t<entity x=\"240\" y=\""+y+"\" type=\"levelComplete\"/>\n" +
                                 "\t<entity x=\"60\" y=\"30\" type=\"player\"/>\n" +
-                                "</level>";
+                                "</level>";                                                     //dodanie zakonczenia czyli gwiazdy zakonczenia i pozycja playera
 
 
             fos.write(levelmap.getBytes());
