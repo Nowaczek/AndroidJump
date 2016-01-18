@@ -65,6 +65,7 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
     //level varable
     public float score = 0;
     public float lastlevel = 0;
+    public int money=0;
 
 
 
@@ -102,7 +103,7 @@ public CallbackManager mCallbackManager;
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException
     {
 
-        score = 0;
+
         Log.d("savefolder", getFilesDir().toString());
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
@@ -356,6 +357,91 @@ public CallbackManager mCallbackManager;
 
 
     }
+
+
+    public void levelcomplete()
+    {
+
+
+        try {
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialoglevel", "dialog was created");
+            dialog.setContentView(R.layout.win);
+
+            dialog.setTitle("You complete level!!");
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+            text.setText("You have="+lastlevel+"point !");
+            ImageView image = (ImageView) dialog.findViewById(R.id.image);
+            image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+
+                }
+            });
+
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+        catch(Exception e)
+        {
+            Log.e("error", e.toString());
+        }
+
+
+    }
+    public void gameover()
+    {
+
+
+        try {
+
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialoglevel", "dialog was created");
+            dialog.setContentView(R.layout.lose);
+
+            dialog.setTitle("Game Over");
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+            text.setText("Your Score="+lastlevel);
+            ImageView image = (ImageView) dialog.findViewById(R.id.image);
+            image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+
+
+                }
+            });
+
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+        catch(Exception e)
+        {
+            Log.e("error", e.toString());
+        }
+
+
+    }
+
 
     public void alertdialog() {
 

@@ -67,15 +67,19 @@ public abstract class Player extends AnimatedSprite
                 camera.onUpdate(0.1f);
 
 
-                if(Math.round(getY())>Math.round(ResourcesManager.getInstance().activity.score))
+                if(Math.round(getY())-27>Math.round(ResourcesManager.getInstance().activity.score))
                 {
-                    ResourcesManager.getInstance().activity.score=Math.round(getY());
+                    ResourcesManager.getInstance().activity.score=Math.round(getY()-27);
                 }
 
                 odczytpozycjy();
                 if (getY() <= 0) {
 
                     onDie();
+                    for (int i = 0; i < getBody().getFixtureList().size(); i++) {
+                        this.getBody().getFixtureList().get(i).setSensor(false);
+
+                    }
                 }
             if(canRun==true) {
                 if (x > 0.5 || x < -0.5) {
@@ -162,7 +166,9 @@ public abstract class Player extends AnimatedSprite
 
 
     public void jump()
+
         {
+
         if(footContacts<1)
         {
         return;
@@ -180,6 +186,10 @@ public abstract class Player extends AnimatedSprite
             body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 80));
 
 
+    }
+    public void delete()
+    {
+this.dispose();
     }
 
 

@@ -100,6 +100,9 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         {
             case MENU_PLAY:
                 //Load Game Scene!
+                ResourcesManager.getInstance().activity.money=0;
+                ResourcesManager.getInstance().activity.score=0;
+                ResourcesManager.getInstance().activity.lastlevel=0;
                 SceneManager.getInstance().loadGameScene(engine);
                 return true;
             case MENU_LOGIN:

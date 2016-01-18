@@ -46,7 +46,7 @@ import java.io.IOException;
 public class GameScene extends BaseScene implements  IOnSceneTouchListener
 {
 
-    private int money = 0;
+
     private HUD gameHUD;
     private Text scoreText,moneyText;
     private PhysicsWorld physicsWorld;
@@ -67,7 +67,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private Player player;
 
 
-    private Text gameOverText;
+    private Text gameOverText,gameOverText1;
     private boolean gameOverDisplayed = false;
 
     public boolean end=false;
@@ -81,7 +81,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         createPhysics();
         loadLevel();
         createGameOverText();
-       // ResourcesManager.getInstance().activity.show(String.valueOf(activity.getAssets()));
+
 
 
 
@@ -129,8 +129,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                     player.jump();
                     player.canRun = true;
                 } else {
-                    if (money >= 1) {
-                        money -= 1;
+                    if (ResourcesManager.getInstance().activity.money >= 1) {
+                        ResourcesManager.getInstance().activity.money -= 1;
                         player.jumpextra();
                     }
 
@@ -191,13 +191,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                         protected void onManagedUpdate(float pSecondsElapsed) {
                             super.onManagedUpdate(pSecondsElapsed);
 
-
-
-
-
-
                             if (player.collidesWith(this)) {
-                                money+=1;
+                                ResourcesManager.getInstance().activity.money+=1;
 
                                 this.setVisible(false);
                                 this.setIgnoreUpdate(true);
@@ -212,10 +207,24 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                         @Override
                         public void onDie() {
                             end=true;
-                            move(-1000f);
-                            detachSelf();
+
+
+
 
                             if (!gameOverDisplayed) {
+                                player.setVisible(false);
+                                player.setIgnoreUpdate(true);
+                                player.delete();
+
+                                ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ResourcesManager.getInstance().activity.gameover();
+                                    }
+                                });
+
+
+                                move(-1000f);
                                 displayGameOverText();
                             }
                         }
@@ -238,19 +247,19 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                                 ResourcesManager.getInstance().activity.score=0;
                                 /*
                                todo
-                               levelCompleteWindow.display(LevelCompleteWindow.StarsCount.TWO, GameScene.this, camera);
-                               for (int i = 0; i < getBody().getFixtureList().size(); i++) {
-                                    this.getBody().getFixtureList().get(i).setSensor(false);
 
-                                }
                                */
 
-                                this.setVisible(false);
-                                this.setIgnoreUpdate(true);
 
+                               // SceneManager.getInstance().loadGameScene(engine);
+                                ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ResourcesManager.getInstance().activity.levelcomplete();
+                                    }
+                                });
 
-
-
+                                SceneManager.getInstance().loadGameScene(engine);
 
 
                             }
@@ -290,6 +299,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private void createGameOverText()
     {
         gameOverText = new Text(0, 0, resourcesManager.font, "Game Over!", vbom);
+        gameOverText1= new Text(0, 0, resourcesManager.font, "Click 'back' to go menu", vbom);
     }
 
     private void displayGameOverText()
@@ -297,8 +307,10 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
 
         camera.setChaseEntity(null);
-        gameOverText.setPosition(camera.getCenterX(), camera.getCenterY() + 200);
+        gameOverText.setPosition(camera.getCenterX(), camera.getCenterY() + 50);
         attachChild(gameOverText);
+        gameOverText1.setPosition(camera.getCenterX(), camera.getCenterY() );
+        attachChild(gameOverText1);
         gameOverDisplayed = true;
 
     }
@@ -327,7 +339,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private void setResult()
     {
 
-        moneyText.setText("Money: " + money+" $$");
+        moneyText.setText("Money: " + ResourcesManager.getInstance().activity.money+" $$");
         Float temp=ResourcesManager.getInstance().activity.score+ResourcesManager.getInstance().activity.lastlevel;
         scoreText.setText("Score: " + temp+" ptk");
     }
@@ -407,6 +419,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         };
         return contactListener;
     }
+
 
 
 
