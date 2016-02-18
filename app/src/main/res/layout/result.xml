@@ -11,8 +11,8 @@
 
         <com.facebook.login.widget.ProfilePictureView
             android:layout_width="50dp"
-            android:layout_height="50dp">
-            android:id="@+id/fbpicture"
+            android:layout_height="50dp"
+            android:id="@+id/fbpicture">
         </com.facebook.login.widget.ProfilePictureView>
 
         <LinearLayout

@@ -25,6 +25,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     private final int MENU_PLAY = 0;
     private final int MENU_LOGIN = 1;
+    private final int MENU_HOWTO = 2;
 
     //-----------------
     //      0-pierwsze
@@ -115,20 +116,18 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 else
                 {
 
-
-
                     ResourcesManager.getInstance().activity.fblogin();
                     new waiting().execute();
 
-
-
-
-
-
-
-
-
                 }
+                return true;
+            case MENU_HOWTO:
+                ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ResourcesManager.getInstance().activity.howtoplay();
+                    }
+                });
 
 
 
@@ -177,14 +176,17 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         {
              loginMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_LOGIN, resourcesManager.login_region, vbom), 1.2f, 1);
         }
+        final IMenuItem howtoMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_HOWTO, resourcesManager.howto_region, vbom), 1.2f, 1);
         menuChildScene.addMenuItem(playMenuItem);
         menuChildScene.addMenuItem(loginMenuItem);
+        menuChildScene.addMenuItem(howtoMenuItem);
 
         menuChildScene.buildAnimations();
         menuChildScene.setBackgroundEnabled(false);
 
         playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 100);
         loginMenuItem.setPosition(loginMenuItem.getX(), loginMenuItem.getY() - 110);
+        howtoMenuItem.setPosition(loginMenuItem.getX(), loginMenuItem.getY() - 120);
 
         menuChildScene.setOnMenuItemClickListener(this);
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -30,6 +31,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
@@ -216,12 +218,27 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                                 player.setIgnoreUpdate(true);
                                 player.delete();
 
-                                ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ResourcesManager.getInstance().activity.gameover();
-                                    }
-                                });
+
+                                if(ResourcesManager.getInstance().activity.fbchecklogin()==true)
+                                {
+                                    ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ResourcesManager.getInstance().activity.gameover();
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ResourcesManager.getInstance().activity.gameovernoconnect();
+                                        }
+                                    });
+                                }
+
+
 
 
                                 move(-1000f);
@@ -299,7 +316,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private void createGameOverText()
     {
         gameOverText = new Text(0, 0, resourcesManager.font, "Game Over!", vbom);
-        gameOverText1= new Text(0, 0, resourcesManager.font, "Click 'back' to go menu", vbom);
+        gameOverText1= new Text(0, 0, resourcesManager.font, "Click 'back' to menu", vbom);
     }
 
     private void displayGameOverText()
@@ -333,6 +350,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private void createBackground()
     {
         setBackground(new Background(Color.BLUE));
+        
     }
 
 

@@ -48,6 +48,7 @@ public class ResourcesManager
     public ITextureRegion play_region;
     public ITextureRegion login_region;
     public ITextureRegion logout_region;
+    public ITextureRegion howto_region;
 
 
     // Game Texture
@@ -59,7 +60,7 @@ public class ResourcesManager
     public ITextureRegion platform3_region;
     public ITextureRegion coin_region;
     public ITiledTextureRegion player_region;
-
+    public ITextureRegion game_background_region;
     private BitmapTextureAtlas splashTextureAtlas;
     private BuildableBitmapTextureAtlas menuTextureAtlas;
 
@@ -96,7 +97,7 @@ public class ResourcesManager
         play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
         login_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "fblogin.png");
         logout_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "fblogout.png");
-
+        howto_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "howtoplay.png");
         try
         {
             this.menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -126,7 +127,7 @@ public class ResourcesManager
     {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-
+        //game_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
         platform1_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform1.png");
         platform2_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform2.png");
         platform3_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform3.png");

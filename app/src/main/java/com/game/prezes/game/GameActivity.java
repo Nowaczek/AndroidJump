@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -372,7 +373,7 @@ public CallbackManager mCallbackManager;
 
             // set the custom dialog components - text, image and button
             TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText("You have="+lastlevel+"point !");
+            text.setText("You have="+lastlevel+"point");
             ImageView image = (ImageView) dialog.findViewById(R.id.image);
             image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
 
@@ -402,6 +403,18 @@ public CallbackManager mCallbackManager;
     public void gameover()
     {
 
+        String [] name={
+                "Google Plus","Google Plus"
+
+        } ;
+        String [] score={
+                "54645","54645"
+
+        } ;
+        String [] picture={
+                "456456456","456456456"
+
+        } ;
 
         try {
 
@@ -412,10 +425,69 @@ public CallbackManager mCallbackManager;
             dialog.setTitle("Game Over");
 
             // set the custom dialog components - text, image and button
+
+            //recive score
+
+
+
+
+            ///list
+            View view = getLayoutInflater().inflate(R.layout.lose, null);
+            ListView list;
+            CustomList adapter = new
+                    CustomList(GameActivity.this, name, score);
+            list=(ListView)view.findViewById(R.id.Lista);
+            list.setAdapter(adapter);
+
+            dialog.setContentView(view);
+
+
+            ///list
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+
+
+                }
+            });
             TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText("Your Score="+lastlevel);
+            text.setText("Your Score=" + ResourcesManager.getInstance().activity.score);
             ImageView image = (ImageView) dialog.findViewById(R.id.image);
             image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+        catch(Exception e)
+        {
+            Log.e("error", e.toString());
+        }
+
+
+    }
+
+    public void gameovernoconnect()
+    {
+
+
+        try {
+
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialoglevel", "dialog was created");
+            dialog.setContentView(R.layout.losenoconnect);
+
+            dialog.setTitle("Game Over");
+
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+            text.setText("Your Score=" + lastlevel);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
@@ -441,8 +513,46 @@ public CallbackManager mCallbackManager;
 
 
     }
+    public void howtoplay()
+    {
 
 
+        try {
+
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialoglevel", "dialog was created");
+            dialog.setContentView(R.layout.losenoconnect);
+
+            dialog.setTitle("Game Over");
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+            text.setText("Your Score="+lastlevel);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+
+
+                }
+            });
+
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+        catch(Exception e)
+        {
+            Log.e("error", e.toString());
+        }
+
+
+    }
     public void alertdialog() {
 
         final Context context = this;
@@ -643,5 +753,6 @@ public CallbackManager mCallbackManager;
 
 
     }
+
 
 }
