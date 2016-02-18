@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,16 +43,27 @@ import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 
@@ -77,7 +89,16 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
     String id_profile;
 
     public ITextureRegion profilepicture;
+////////result
 
+   public String [] namewyniki;
+
+
+    public String [] scorewyniki;
+    public String [] picturewyniki;
+
+    String json = "";
+    public String result=null;
 
 
 public CallbackManager mCallbackManager;
@@ -403,71 +424,10 @@ public CallbackManager mCallbackManager;
     public void gameover()
     {
 
-        String [] name={
-                "Google Plus","Google Plus"
-
-        } ;
-        String [] score={
-                "54645","54645"
-
-        } ;
-        String [] picture={
-                "456456456","456456456"
-
-        } ;
-
-        try {
-
-            final Dialog dialog = new Dialog(this);
-            Log.i("dialoglevel", "dialog was created");
-            dialog.setContentView(R.layout.lose);
-
-            dialog.setTitle("Game Over");
-
-            // set the custom dialog components - text, image and button
-
-            //recive score
+        new If().execute("http://projektpz0001-001-site1.btempurl.com/api/wyniki");
 
 
 
-
-            ///list
-            View view = getLayoutInflater().inflate(R.layout.lose, null);
-            ListView list;
-            CustomList adapter = new
-                    CustomList(GameActivity.this, name, score);
-            list=(ListView)view.findViewById(R.id.Lista);
-            list.setAdapter(adapter);
-
-            dialog.setContentView(view);
-
-
-            ///list
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-            // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    dialog.dismiss();
-
-
-                }
-            });
-            TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText("Your Score=" + ResourcesManager.getInstance().activity.score);
-            ImageView image = (ImageView) dialog.findViewById(R.id.image);
-            image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
-            dialog.show();
-            Log.i("dialog", "show");
-
-
-        }
-        catch(Exception e)
-        {
-            Log.e("error", e.toString());
-        }
 
 
     }
@@ -487,7 +447,8 @@ public CallbackManager mCallbackManager;
 
             // set the custom dialog components - text, image and button
             TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText("Your Score=" + lastlevel);
+            Float wynikdisplay=lastlevel+score;
+            text.setText("Your Score=" + wynikdisplay);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
@@ -751,6 +712,205 @@ public CallbackManager mCallbackManager;
 
 
 
+
+    }
+    private class Getresults extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return GET(urls[0]);
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            try {
+
+                String results = result.replace("\"","");
+                String[] calewyniki = results.split(";");
+
+
+                namewyniki=new String[calewyniki.length/3];
+                scorewyniki=new String[calewyniki.length/3];
+                picturewyniki=new String[calewyniki.length/3];
+                int j =0;
+                for (int i = 0; i < calewyniki.length; i+=3) {
+
+                namewyniki[j]=calewyniki[i];
+                scorewyniki[j]=calewyniki[i+1];
+                picturewyniki[j]=calewyniki[i+2];
+                  j+=1;
+                }
+
+
+            } catch (Exception e) {
+
+            }
+            try {
+
+                final Dialog dialog = new Dialog(GameActivity.this);
+                Log.i("dialoglevel", "dialog was created");
+                dialog.setContentView(R.layout.lose);
+
+                dialog.setTitle("Game Over");
+
+                // set the custom dialog components - text, image and button
+
+                //recive score
+
+
+
+
+                ///list
+                View view = getLayoutInflater().inflate(R.layout.lose, null);
+                ListView list;
+                CustomList adapter = new
+                        CustomList(GameActivity.this, namewyniki, scorewyniki,picturewyniki);
+                list=(ListView)view.findViewById(R.id.Lista);
+                list.setAdapter(adapter);
+
+                dialog.setContentView(view);
+
+
+                ///list
+
+                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+
+
+                    }
+                });
+                Float wynikdisplay=ResourcesManager.getInstance().activity.score+ResourcesManager.getInstance().activity.lastlevel;
+                TextView text = (TextView) dialog.findViewById(R.id.text);
+                text.setText("Your Score=" +wynikdisplay );
+                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+                image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
+                dialog.show();
+                Log.i("dialog", "show");
+
+
+            }
+            catch(Exception e)
+            {
+                Log.e("error", e.toString());
+            }
+
+
+
+        }
+    }
+
+    //GET ticket
+    public static String GET(String url) {
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if (inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+    private class If extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+
+            return POSTIf(urls[0],name_profile,score+lastlevel,id_profile);
+
+        }
+
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+
+            Integer in= Integer.valueOf(result);
+
+            if(in==0)
+                Toast.makeText(getApplicationContext(), "B��d serwera", Toast.LENGTH_LONG).show();
+            if(in==1)
+                Toast.makeText(getApplicationContext(), "Poprawi�e� sw�j wynik!!!", Toast.LENGTH_LONG).show();
+            if(in==2)
+                Toast.makeText(getApplicationContext(), "Niestety nie poprawi�e� swojego wyniku", Toast.LENGTH_LONG).show();
+            if(in==3)
+                Toast.makeText(getApplicationContext(), "Jeste� pierwszy raz na li�cie", Toast.LENGTH_LONG).show();
+
+            new Getresults().execute("http://projektpz0001-001-site1.btempurl.com/api/wyniki");
+
+        }
+
+    }
+    public String POSTIf(String url, String name, Float wynik, String picture) {
+        InputStream inputStream = null;
+
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("name", name);
+            jsonObject.accumulate("score", wynik);
+            jsonObject.accumulate("picture", picture);
+
+            json = jsonObject.toString();
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            inputStream = httpResponse.getEntity().getContent();
+            if (inputStream != null) {
+                result = convertInputStreamToString(inputStream);
+            } else {
+
+
+            }
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+        return result;
+    }
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
 
     }
 

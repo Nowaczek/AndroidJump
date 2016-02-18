@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6c39a08bddf743d194b7192ebe28a4b2" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_9CA667_projektPZModel.Klienci" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9CA667_projektPZModel.Kontrolerzy" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9CA667_projektPZModel.Mandaty" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9CA667_projektPZModel.Rodzaje_biletów" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9CA667_projektPZModel.Zakupione_bilety" Width="1.5" PointX="6" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="DB_9CA667_projektPZModel.FK__Mandaty__Id_Klie__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9CA667_projektPZModel.FK__Zakupione__Id_Kl__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9CA667_projektPZModel.FK__Mandaty__Id_Kont__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9CA667_projektPZModel.FK__Zakupione__Id_Ro__619B8048" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

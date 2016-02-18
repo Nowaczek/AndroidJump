@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DB_9BDC46_bazaModelStoreContainer" CdmEntityContainer="DB_9BDC46_bazaEntities2">
+    <EntitySetMapping Name="Kliencis">
+      <EntityTypeMapping TypeName="DB_9BDC46_bazaModel.Klienci">
+        <MappingFragment StoreEntitySet="Klienci">
+          <ScalarProperty Name="Id_Klienta" ColumnName="Id_Klienta" />
+          <ScalarProperty Name="Imie" ColumnName="Imie" />
+          <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+          <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Kontrolerzies">
+      <EntityTypeMapping TypeName="DB_9BDC46_bazaModel.Kontrolerzy">
+        <MappingFragment StoreEntitySet="Kontrolerzy">
+          <ScalarProperty Name="Id_Kontrolera" ColumnName="Id_Kontrolera" />
+          <ScalarProperty Name="Imię" ColumnName="Imię" />
+          <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+          <ScalarProperty Name="Umowa_OD" ColumnName="Umowa_OD" />
+          <ScalarProperty Name="Umowa_DO" ColumnName="Umowa_DO" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Mandaties">
+      <EntityTypeMapping TypeName="DB_9BDC46_bazaModel.Mandaty">
+        <MappingFragment StoreEntitySet="Mandaty">
+          <ScalarProperty Name="Id_Mandatu" ColumnName="Id_Mandatu" />
+          <ScalarProperty Name="Id_Klienta" ColumnName="Id_Klienta" />
+          <ScalarProperty Name="Id_Kontrolera" ColumnName="Id_Kontrolera" />
+          <ScalarProperty Name="Kwota" ColumnName="Kwota" />
+          <ScalarProperty Name="Data_wystawienia" ColumnName="Data_wystawienia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rodzaje_biletów">
+      <EntityTypeMapping TypeName="DB_9BDC46_bazaModel.Rodzaje_biletów">
+        <MappingFragment StoreEntitySet="Rodzaje_biletów">
+          <ScalarProperty Name="Id_Rodzaju" ColumnName="Id_Rodzaju" />
+          <ScalarProperty Name="Nazwa" ColumnName="Nazwa" />
+          <ScalarProperty Name="Cena" ColumnName="Cena" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Zakupione_bilety">
+      <EntityTypeMapping TypeName="DB_9BDC46_bazaModel.Zakupione_bilety">
+        <MappingFragment StoreEntitySet="Zakupione_bilety">
+          <ScalarProperty Name="Id_Biletu" ColumnName="Id_Biletu" />
+          <ScalarProperty Name="Id_Rodzaju" ColumnName="Id_Rodzaju" />
+          <ScalarProperty Name="Id_Klienta" ColumnName="Id_Klienta" />
+          <ScalarProperty Name="Ważność_OD" ColumnName="Ważność_OD" />
+          <ScalarProperty Name="Ważność_DO" ColumnName="Ważność_DO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

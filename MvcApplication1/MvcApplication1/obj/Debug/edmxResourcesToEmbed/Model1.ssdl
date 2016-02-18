@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_9CA667_projektPZModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Klienci">
+    <Key>
+      <PropertyRef Name="Id_Klienta" />
+    </Key>
+    <Property Name="Id_Klienta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Imie" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Saldo" Type="money" Nullable="false" />
+    <Property Name="Token" Type="varchar" MaxLength="255" />
+    <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Haslo" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Kontrolerzy">
+    <Key>
+      <PropertyRef Name="Id_Kontrolera" />
+    </Key>
+    <Property Name="Id_Kontrolera" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Imię" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Umowa_OD" Type="date" Nullable="false" />
+    <Property Name="Umowa_DO" Type="date" Nullable="false" />
+    <Property Name="Token" Type="varchar" MaxLength="255" />
+    <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Haslo" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mandaty">
+    <Key>
+      <PropertyRef Name="Id_Mandatu" />
+    </Key>
+    <Property Name="Id_Mandatu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Klienta" Type="int" Nullable="false" />
+    <Property Name="Id_Kontrolera" Type="int" Nullable="false" />
+    <Property Name="Kwota" Type="money" Nullable="false" />
+    <Property Name="Data_wystawienia" Type="smalldatetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rodzaje_biletów">
+    <Key>
+      <PropertyRef Name="Id_Rodzaju" />
+    </Key>
+    <Property Name="Id_Rodzaju" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nazwa" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Cena" Type="money" Nullable="false" />
+    <Property Name="Czas_trwania" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Zakupione_bilety">
+    <Key>
+      <PropertyRef Name="Id_Biletu" />
+    </Key>
+    <Property Name="Id_Biletu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Rodzaju" Type="int" Nullable="false" />
+    <Property Name="Id_Klienta" Type="int" Nullable="false" />
+    <Property Name="Ważność_OD" Type="smalldatetime" Nullable="false" />
+    <Property Name="Ważność_DO" Type="smalldatetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Mandaty__Id_Klie__5CD6CB2B">
+    <End Role="Klienci" Type="Self.Klienci" Multiplicity="1" />
+    <End Role="Mandaty" Type="Self.Mandaty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Klienci">
+        <PropertyRef Name="Id_Klienta" />
+      </Principal>
+      <Dependent Role="Mandaty">
+        <PropertyRef Name="Id_Klienta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Mandaty__Id_Kont__5DCAEF64">
+    <End Role="Kontrolerzy" Type="Self.Kontrolerzy" Multiplicity="1" />
+    <End Role="Mandaty" Type="Self.Mandaty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kontrolerzy">
+        <PropertyRef Name="Id_Kontrolera" />
+      </Principal>
+      <Dependent Role="Mandaty">
+        <PropertyRef Name="Id_Kontrolera" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Zakupione__Id_Kl__628FA481">
+    <End Role="Klienci" Type="Self.Klienci" Multiplicity="1" />
+    <End Role="Zakupione_bilety" Type="Self.Zakupione_bilety" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Klienci">
+        <PropertyRef Name="Id_Klienta" />
+      </Principal>
+      <Dependent Role="Zakupione_bilety">
+        <PropertyRef Name="Id_Klienta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Zakupione__Id_Ro__619B8048">
+    <End Role="Rodzaje_biletów" Type="Self.Rodzaje_biletów" Multiplicity="1" />
+    <End Role="Zakupione_bilety" Type="Self.Zakupione_bilety" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rodzaje_biletów">
+        <PropertyRef Name="Id_Rodzaju" />
+      </Principal>
+      <Dependent Role="Zakupione_bilety">
+        <PropertyRef Name="Id_Rodzaju" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB_9CA667_projektPZModelStoreContainer">
+    <EntitySet Name="Klienci" EntityType="Self.Klienci" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kontrolerzy" EntityType="Self.Kontrolerzy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Mandaty" EntityType="Self.Mandaty" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rodzaje_biletów" EntityType="Self.Rodzaje_biletów" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Zakupione_bilety" EntityType="Self.Zakupione_bilety" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Mandaty__Id_Klie__5CD6CB2B" Association="Self.FK__Mandaty__Id_Klie__5CD6CB2B">
+      <End Role="Klienci" EntitySet="Klienci" />
+      <End Role="Mandaty" EntitySet="Mandaty" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Mandaty__Id_Kont__5DCAEF64" Association="Self.FK__Mandaty__Id_Kont__5DCAEF64">
+      <End Role="Kontrolerzy" EntitySet="Kontrolerzy" />
+      <End Role="Mandaty" EntitySet="Mandaty" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Zakupione__Id_Kl__628FA481" Association="Self.FK__Zakupione__Id_Kl__628FA481">
+      <End Role="Klienci" EntitySet="Klienci" />
+      <End Role="Zakupione_bilety" EntitySet="Zakupione_bilety" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Zakupione__Id_Ro__619B8048" Association="Self.FK__Zakupione__Id_Ro__619B8048">
+      <End Role="Rodzaje_biletów" EntitySet="Rodzaje_biletów" />
+      <End Role="Zakupione_bilety" EntitySet="Zakupione_bilety" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

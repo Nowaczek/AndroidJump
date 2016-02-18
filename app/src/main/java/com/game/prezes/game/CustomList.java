@@ -18,12 +18,14 @@ public class CustomList extends ArrayAdapter<String>{
     private final Activity context;
     private final String[] name;
     private final String[] score;
+    private final String[] picture;
     public CustomList(Activity context,
-                      String[] name, String[] score) {
+                      String[] name, String[] score,String[] picture) {
         super(context, R.layout.result, name);
         this.context = context;
         this.name = name;
         this.score = score;
+        this.picture=picture;
 
     }
     @Override
@@ -38,6 +40,8 @@ public class CustomList extends ArrayAdapter<String>{
 
 
         scoreTitle.setText(score[position]);
+        ProfilePictureView profile=(ProfilePictureView)rowView.findViewById(R.id.fbpicture);
+        profile.setProfileId(picture[position]);
 
         return rowView;
     }
