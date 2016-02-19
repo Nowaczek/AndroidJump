@@ -26,6 +26,8 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
+import org.andengine.entity.util.FPSCounter;
+import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
@@ -88,16 +90,25 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
 
         setOnSceneTouchListener(this);
+        final FPSCounter fpsCounter = new FPSCounter();
+        this.engine.registerUpdateHandler(fpsCounter);
 
-
+       
+        registerUpdateHandler(new TimerHandler(1 / 20.0f, true, new ITimerCallback() {
+            @Override
+            public void onTimePassed(final TimerHandler pTimerHandler) {
+                Log.e("FPS", String.valueOf(fpsCounter.getFPS()));
+            }
+        }));
     }
 
 
 
     @Override
     public void onBackKeyPressed()
-    {
+    {   ResourcesManager.getInstance().menumusic.play();
         SceneManager.getInstance().loadMenuScene(engine);
+
     }
 
     @Override
@@ -130,9 +141,10 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                 if (player.canRun == false) {
                     player.jump();
                     player.canRun = true;
+                    ResourcesManager.getInstance().gamemusic.play();
                 } else {
-                    if (ResourcesManager.getInstance().activity.money >= 1) {
-                        ResourcesManager.getInstance().activity.money -= 1;
+                    if (ResourcesManager.getInstance().activity.money >= 5) {
+                        ResourcesManager.getInstance().activity.money -= 5;
                         player.jumpextra();
                     }
 
@@ -195,6 +207,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
                             if (player.collidesWith(this)) {
                                 ResourcesManager.getInstance().activity.money+=1;
+                                ResourcesManager.getInstance().coin.play();
 
                                 this.setVisible(false);
                                 this.setIgnoreUpdate(true);
@@ -217,7 +230,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                                 player.setVisible(false);
                                 player.setIgnoreUpdate(true);
                                 player.delete();
-
+                                ResourcesManager.getInstance().gamemusic.pause();
+                                ResourcesManager.getInstance().lose.play();
 
                                 if(ResourcesManager.getInstance().activity.fbchecklogin()==true)
                                 {
@@ -262,6 +276,8 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
                                 ResourcesManager.getInstance().activity.lastlevel+=ResourcesManager.getInstance().activity.score;
                                 ResourcesManager.getInstance().activity.score=0;
+                                ResourcesManager.getInstance().gamemusic.pause();
+                                ResourcesManager.getInstance().win.play();
                                 /*
                                todo
 

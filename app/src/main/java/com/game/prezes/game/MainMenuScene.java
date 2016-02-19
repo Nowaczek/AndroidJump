@@ -38,6 +38,8 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     @Override
     public void createScene()
     {
+        ResourcesManager.getInstance().menumusic.play();
+
 
         createBackground();
 
@@ -105,6 +107,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 ResourcesManager.getInstance().activity.score=0;
                 ResourcesManager.getInstance().activity.lastlevel=0;
                 SceneManager.getInstance().loadGameScene(engine);
+                ResourcesManager.getInstance().menumusic.pause();
                 return true;
             case MENU_LOGIN:
                 if(ResourcesManager.getInstance().activity.iflogin==1)
@@ -125,6 +128,8 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+
                         ResourcesManager.getInstance().activity.howtoplay();
                     }
                 });

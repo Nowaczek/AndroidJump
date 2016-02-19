@@ -169,32 +169,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AddTicketKindController.cs" />
-    <Compile Include="Controllers\BuyticketController.cs" />
-    <Compile Include="Controllers\DodajKontroleraController.cs" />
-    <Compile Include="Controllers\GettimeController.cs" />
-    <Compile Include="Controllers\CurrentController.cs" />
-    <Compile Include="Controllers\CurrentTicketController.cs" />
-    <Compile Include="Controllers\DodajKanaraController.cs" />
-    <Compile Include="Controllers\DodajKlientController.cs" />
-    <Compile Include="Controllers\ImageViewController.cs" />
-    <Compile Include="Controllers\Kontroler2.cs" />
-    <Compile Include="Controllers\Kontroler2_2.cs" />
-    <Compile Include="Controllers\LastTicketsController.cs" />
-    <Compile Include="Controllers\LastticketskanarController.cs" />
-    <Compile Include="Controllers\ListakanarowController.cs" />
-    <Compile Include="Controllers\LogOutController.cs" />
-    <Compile Include="Controllers\QueryController.cs" />
-    <Compile Include="Controllers\TakemoneyController.cs" />
-    <Compile Include="Controllers\UsunkanaraController.cs" />
-    <Compile Include="Controllers\UsunklientaController.cs" />
-    <Compile Include="Controllers\WylogujKanaraController.cs" />
     <Compile Include="Controllers\WynikiController.cs" />
-    <Compile Include="Controllers\ZalogujKanaraController.cs" />
     <Compile Include="Klienci.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Kontroler.cs" />
     <Compile Include="Kontrolerzy.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -216,32 +194,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\currentTicketAnswer.cs" />
-    <Compile Include="Models\kanarTicket.cs" />
     <Compile Include="Models\Result.cs" />
-    <Compile Include="Models\ticketLast.cs" />
-    <Compile Include="Models\loginAnswer.cs" />
-    <Compile Include="Models\MoneyResponse.cs" />
-    <Compile Include="Models\TicketBuy.cs" />
-    <Compile Include="Models\Tocken.cs" />
-    <Compile Include="Models\login.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Ticket.cs" />
-    <Compile Include="Osoba.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rodzaje_biletów.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Token.cs" />
     <Compile Include="Zakupione_bilety.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Zapytania.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -331,6 +294,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Properties\PublishProfiles\projektinz01.pubxml" />
     <None Include="Properties\PublishProfiles\projektPZ0001.pubxml" />
     <None Include="Properties\PublishProfiles\projektPZ_nowabaza.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

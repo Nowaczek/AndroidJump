@@ -1,7 +1,10 @@
 package com.game.prezes.game;
 
 import android.graphics.Color;
+import android.util.Log;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
@@ -18,6 +21,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
+
+import java.io.IOException;
 
 /**
  * @author Mateusz Mysliwiec
@@ -68,6 +73,15 @@ public class ResourcesManager
 
     public ITiledTextureRegion complete_stars_region;
 
+
+    // Music game
+
+    public Music jump,coin,win,lose,sjump,gamemusic;
+
+    //Music menu
+
+    public Music menumusic;
+
     //---------------------------------------------
     // CLASS LOGIC
     //---------------------------------------------
@@ -111,7 +125,14 @@ public class ResourcesManager
 
     private void loadMenuAudio()
     {
+        try {
+            menumusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/menumusic.wav");
+            menumusic.setVolume(0.2f);
+            menumusic.setLooping(true);
 
+        } catch (IOException e) {
+            Log.e("error sound",e.toString());
+        }
     }
 
     private void loadMenuFonts()
@@ -155,7 +176,23 @@ public class ResourcesManager
 
     private void loadGameAudio()
     {
-
+        try {
+            jump = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/jump.flac");
+            jump.setVolume(0.5f);
+            coin = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/coin.wav");
+            coin.setVolume(0.5f);
+            win = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/win.wav");
+            win.setVolume(0.5f);
+            lose = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/lose.wav");
+            lose.setVolume(0.5f);
+            sjump = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/sjump.wav");
+            sjump.setVolume(0.5f);
+            gamemusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/gamemusic.wav");
+            gamemusic.setVolume(0.5f);
+            gamemusic.setLooping(true);
+        } catch (IOException e) {
+            Log.e("error sound",e.toString());
+        }
     }
 
     public void unloadGameTextures()

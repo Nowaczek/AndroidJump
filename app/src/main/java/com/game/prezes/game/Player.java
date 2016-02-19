@@ -90,7 +90,7 @@ public abstract class Player extends AnimatedSprite
                     }
 
                 }
-                Log.d("Predkosc x", "Log Message" + body.getLinearVelocity().y);
+                //Log.d("Predkosc x", "Log Message" + body.getLinearVelocity().y);
                 if (body.getLinearVelocity().y < 0) {
                     for (int i = 0; i < getBody().getFixtureList().size(); i++) {
                         this.getBody().getFixtureList().get(i).setSensor(false);
@@ -176,13 +176,14 @@ public abstract class Player extends AnimatedSprite
         else
         {
         body.setLinearVelocity(new Vector2(body.getLinearVelocity().x,45));
+            ResourcesManager.getInstance().jump.play();
         }
         }
 
 
     public void jumpextra()
     {
-
+        ResourcesManager.getInstance().sjump.play();
             body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 80));
 
 

@@ -98,7 +98,7 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
     public String [] picturewyniki;
 
     String json = "";
-    public String result=null;
+    public String result="a";
 
 
 public CallbackManager mCallbackManager;
@@ -424,7 +424,7 @@ public CallbackManager mCallbackManager;
     public void gameover()
     {
 
-        new If().execute("http://projektpz0001-001-site1.btempurl.com/api/wyniki");
+        new If().execute("http://projektinz01-001-site1.ctempurl.com/api/wyniki");
 
 
 
@@ -479,26 +479,23 @@ public CallbackManager mCallbackManager;
 
 
         try {
-
             final Dialog dialog = new Dialog(this);
-            Log.i("dialoglevel", "dialog was created");
-            dialog.setContentView(R.layout.losenoconnect);
+            Log.i("dialog", "dialog was created");
+            dialog.setContentView(R.layout.info);
 
-            dialog.setTitle("Game Over");
+            dialog.setTitle("How to play");
 
             // set the custom dialog components - text, image and button
-            TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText("Your Score="+lastlevel);
 
+            ImageView image = (ImageView) dialog.findViewById(R.id.image);
+
+            image.setImageResource(R.mipmap.info);
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     dialog.dismiss();
-
-
                 }
             });
 
@@ -553,7 +550,7 @@ public CallbackManager mCallbackManager;
             FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "map.lvl"));
             //string okresjalacy mape platform
             String levelmap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                    "\t<level width=\"480\" height=\"20000\">\n"+
+                    "\t<level width=\"480\" height=\"40000\">\n"+
                     "\t<entity x=\"60\" y=\"16\" type=\"platform1\"/>\n";//dodanie wstepu pliku w formacie XML podanie rozmiaru mapy i pierwszej platformy na ktorej bedzie stal playter
             //string okreslajacy mape monet
             String coinmap="";
@@ -570,7 +567,7 @@ public CallbackManager mCallbackManager;
             Integer x_temp;                 //zmienna ktora poprawia pozycje w osi x
             Integer coin;                   //zmienna okresjalaca stworzenie monety
 
-            for(int i =0;i<10;i++)                                                                                       //petla odpowiedzialna za liczbe "pieter"
+            for(int i =0;i<150;i++)                                                                                       //petla odpowiedzialna za liczbe "pieter"
             {
                 y+=rand.nextInt((270 - 139) + 1) + 139;                                                                  //kolejna wysokosc "pietra" z przedzialu 140 - 270
                 counterplatform =rand.nextInt((2 - 1) + 1) + 1;                                                          //ilosc platform na danym poziomie
@@ -588,7 +585,7 @@ public CallbackManager mCallbackManager;
 
                         if(platform==1)                                                                                    //jezeli platforma stala
                         {
-                            if(coin>0)                                                                                     //ustalanie ptawdopodobienstwa wystapienia monety
+                            if(coin>85)                                                                                     //ustalanie ptawdopodobienstwa wystapienia monety
                             {
                                 levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";           //dodanie do stringu mapy kojna platforme
                                 y_temp=y+50;                                                                                //temp ustala poprawiona pozycje
@@ -602,7 +599,7 @@ public CallbackManager mCallbackManager;
                         }
                         else                                                                                                //to samo co powyzej, lecz tutaj sa tworzone platformy rodzaju 2 i 3 ktore wymagaja poprawionej pozycji, inaczej nakladaly by sie
                         {
-                            if(coin>0)                                                                                      //platforma z moneta
+                            if(coin>85)                                                                                      //platforma z moneta
                             {
                                 x_temp=x+52;
                                 y_temp=y+11;
@@ -633,7 +630,7 @@ public CallbackManager mCallbackManager;
 
                         if(platform==1)
                         {
-                            if(coin>0)
+                            if(coin>85)
                             {
                                 levelmap+="\t<entity x=\""+x+"\" y=\""+y+"\" type=\"platform"+platform+"\"/>\n";
                                 y_temp=y+50;
@@ -647,7 +644,7 @@ public CallbackManager mCallbackManager;
                         }
                         else
                         {
-                            if(coin>0)
+                            if(coin>85)
                             {
                                 x_temp=x+52;
                                 y_temp=y+11;
@@ -851,15 +848,15 @@ public CallbackManager mCallbackManager;
             Integer in= Integer.valueOf(result);
 
             if(in==0)
-                Toast.makeText(getApplicationContext(), "B��d serwera", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
             if(in==1)
-                Toast.makeText(getApplicationContext(), "Poprawi�e� sw�j wynik!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You improved your score!!!", Toast.LENGTH_LONG).show();
             if(in==2)
-                Toast.makeText(getApplicationContext(), "Niestety nie poprawi�e� swojego wyniku", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You not improved your score", Toast.LENGTH_LONG).show();
             if(in==3)
-                Toast.makeText(getApplicationContext(), "Jeste� pierwszy raz na li�cie", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You are first time on the list", Toast.LENGTH_LONG).show();
 
-            new Getresults().execute("http://projektpz0001-001-site1.btempurl.com/api/wyniki");
+            new Getresults().execute("http://projektinz01-001-site1.ctempurl.com/api/wyniki");
 
         }
 
