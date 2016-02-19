@@ -550,7 +550,7 @@ public CallbackManager mCallbackManager;
             FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "map.lvl"));
             //string okresjalacy mape platform
             String levelmap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                    "\t<level width=\"480\" height=\"40000\">\n"+
+                    "\t<level width=\"480\" height=\"22000\">\n"+
                     "\t<entity x=\"60\" y=\"16\" type=\"platform1\"/>\n";//dodanie wstepu pliku w formacie XML podanie rozmiaru mapy i pierwszej platformy na ktorej bedzie stal playter
             //string okreslajacy mape monet
             String coinmap="";
@@ -567,7 +567,7 @@ public CallbackManager mCallbackManager;
             Integer x_temp;                 //zmienna ktora poprawia pozycje w osi x
             Integer coin;                   //zmienna okresjalaca stworzenie monety
 
-            for(int i =0;i<150;i++)                                                                                       //petla odpowiedzialna za liczbe "pieter"
+            for(int i =0;i<90;i++)                                                                                       //petla odpowiedzialna za liczbe "pieter"
             {
                 y+=rand.nextInt((270 - 139) + 1) + 139;                                                                  //kolejna wysokosc "pietra" z przedzialu 140 - 270
                 counterplatform =rand.nextInt((2 - 1) + 1) + 1;                                                          //ilosc platform na danym poziomie

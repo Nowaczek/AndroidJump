@@ -93,7 +93,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         final FPSCounter fpsCounter = new FPSCounter();
         this.engine.registerUpdateHandler(fpsCounter);
 
-       
+
         registerUpdateHandler(new TimerHandler(1 / 20.0f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -230,7 +230,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                                 player.setVisible(false);
                                 player.setIgnoreUpdate(true);
                                 player.delete();
-                                ResourcesManager.getInstance().gamemusic.pause();
+                               ResourcesManager.getInstance().gamemusic.pause();
                                 ResourcesManager.getInstance().lose.play();
 
                                 if(ResourcesManager.getInstance().activity.fbchecklogin()==true)
@@ -255,6 +255,9 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
 
 
+
+                                move(-1000f);
+                                move(-1000f);
                                 move(-1000f);
                                 displayGameOverText();
                             }

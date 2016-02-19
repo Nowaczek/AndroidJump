@@ -125,6 +125,7 @@ public class ResourcesManager
 
     private void loadMenuAudio()
     {
+
         try {
             menumusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/menumusic.wav");
             menumusic.setVolume(0.2f);
@@ -177,7 +178,7 @@ public class ResourcesManager
     private void loadGameAudio()
     {
         try {
-            jump = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/jump.flac");
+            jump = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/jump.wav");
             jump.setVolume(0.5f);
             coin = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music/coin.wav");
             coin.setVolume(0.5f);
