@@ -1,5 +1,6 @@
 package com.game.prezes.game;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -61,6 +64,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,6 +87,51 @@ public class GameActivity extends BaseGameActivity implements IAccelerationListe
     public int money=0;
 
 
+    //Test FPS list
+
+    public List<Float> listaFPS= new ArrayList<Float>();
+    public void showfps()
+    {
+        try {
+
+            final Dialog dialog = new Dialog(this);
+            Log.i("dialoglevel", "dialog was created");
+            dialog.setContentView(R.layout.losenoconnect);
+
+            dialog.setTitle("FPS");
+            Float srednia=0f;
+            for(int i =0 ;i<listaFPS.size();i++)
+            {
+                srednia+=listaFPS.get(i);
+            }
+             srednia=srednia/listaFPS.size();
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.text);
+
+            text.setText("FPS" + srednia);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+
+
+                }
+            });
+
+            dialog.show();
+            Log.i("dialog", "show");
+
+
+        }
+        catch(Exception e)
+        {
+            Log.e("error", e.toString());
+        }
+    }
 
 
     ///////FB
@@ -448,7 +499,8 @@ public CallbackManager mCallbackManager;
             // set the custom dialog components - text, image and button
             TextView text = (TextView) dialog.findViewById(R.id.text);
             Float wynikdisplay=lastlevel+score;
-            text.setText("Your Score=" + wynikdisplay);
+            NumberFormat myformatter = new DecimalFormat("########");
+            text.setText("Your Score=" + myformatter.format(wynikdisplay));
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
@@ -786,7 +838,8 @@ public CallbackManager mCallbackManager;
                 });
                 Float wynikdisplay=ResourcesManager.getInstance().activity.score+ResourcesManager.getInstance().activity.lastlevel;
                 TextView text = (TextView) dialog.findViewById(R.id.text);
-                text.setText("Your Score=" +wynikdisplay );
+                NumberFormat myformatter = new DecimalFormat("########");
+                text.setText("Your Score=" +myformatter.format(wynikdisplay) );
                 ImageView image = (ImageView) dialog.findViewById(R.id.image);
                 image.setImageURI(Uri.parse("data/data/com.game.prezes.game/files/profile"));
                 dialog.show();
@@ -909,6 +962,14 @@ public CallbackManager mCallbackManager;
         inputStream.close();
         return result;
 
+    }
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 
 

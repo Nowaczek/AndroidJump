@@ -46,6 +46,8 @@ import org.xml.sax.Attributes;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class GameScene extends BaseScene implements  IOnSceneTouchListener
 {
@@ -94,10 +96,11 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         this.engine.registerUpdateHandler(fpsCounter);
 
 
-        registerUpdateHandler(new TimerHandler(1 / 20.0f, true, new ITimerCallback() {
+        registerUpdateHandler(new TimerHandler(1 / 2.0f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler pTimerHandler) {
                 Log.e("FPS", String.valueOf(fpsCounter.getFPS()));
+                ResourcesManager.getInstance().activity.listaFPS.add(fpsCounter.getFPS());
             }
         }));
     }
@@ -107,6 +110,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     @Override
     public void onBackKeyPressed()
     {   ResourcesManager.getInstance().menumusic.play();
+        ResourcesManager.getInstance().gamemusic.pause();
         SceneManager.getInstance().loadMenuScene(engine);
 
     }
@@ -142,6 +146,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
                     player.jump();
                     player.canRun = true;
                     ResourcesManager.getInstance().gamemusic.play();
+                    player.setRunning();
                 } else {
                     if (ResourcesManager.getInstance().activity.money >= 5) {
                         ResourcesManager.getInstance().activity.money -= 5;
@@ -235,12 +240,23 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
 
                                 if(ResourcesManager.getInstance().activity.fbchecklogin()==true)
                                 {
-                                    ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ResourcesManager.getInstance().activity.gameover();
-                                        }
-                                    });
+                                    if(ResourcesManager.getInstance().activity.isConnected()) {
+                                        ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ResourcesManager.getInstance().activity.gameover();
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        ResourcesManager.getInstance().activity.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ResourcesManager.getInstance().activity.gameovernoconnect();
+                                            }
+                                        });
+                                    }
                                 }
                                 else
                                 {
@@ -376,9 +392,11 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
     private void setResult()
     {
 
-        moneyText.setText("Money: " + ResourcesManager.getInstance().activity.money+" $$");
+        moneyText.setText("Money: $" + ResourcesManager.getInstance().activity.money);
         Float temp=ResourcesManager.getInstance().activity.score+ResourcesManager.getInstance().activity.lastlevel;
-        scoreText.setText("Score: " + temp+" ptk");
+        NumberFormat myformatter = new DecimalFormat("########");
+
+        scoreText.setText("Score: " + myformatter.format(temp)+" pkt");
     }
 
     private void createPhysics()
@@ -456,6 +474,7 @@ public class GameScene extends BaseScene implements  IOnSceneTouchListener
         };
         return contactListener;
     }
+
 
 
 

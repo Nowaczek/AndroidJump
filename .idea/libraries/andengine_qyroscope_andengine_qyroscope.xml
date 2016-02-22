@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="andengine-qyroscope.andengine-qyroscope">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/andengine-qyroscope/andengine-qyroscope.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

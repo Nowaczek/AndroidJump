@@ -153,7 +153,9 @@ public abstract class Player extends AnimatedSprite
     public void setRunning() {
         canRun = true;
 
-        final long[] PLAYER_ANIMATE = new long[]{100, 100, 100};
+        final long[] PLAYER_ANIMATE = new long[]{100, 100
+        };
+        animate(PLAYER_ANIMATE, 0, 1, true);
     }
 
 
