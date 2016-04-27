@@ -475,7 +475,7 @@ public CallbackManager mCallbackManager;
     public void gameover()
     {
 
-        new If().execute("http://projektinz01-001-site1.ctempurl.com/api/wyniki");
+        new If().execute("http://pracainz-001-site1.dtempurl.com/api/wyniki");
 
 
 
@@ -909,7 +909,7 @@ public CallbackManager mCallbackManager;
             if(in==3)
                 Toast.makeText(getApplicationContext(), "You are first time on the list", Toast.LENGTH_LONG).show();
 
-            new Getresults().execute("http://projektinz01-001-site1.ctempurl.com/api/wyniki");
+            new Getresults().execute("http://pracainz-001-site1.dtempurl.com/api/wyniki");
 
         }
 

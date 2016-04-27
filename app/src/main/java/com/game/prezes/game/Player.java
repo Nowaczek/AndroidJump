@@ -160,10 +160,10 @@ public abstract class Player extends AnimatedSprite
 
 
     public void move(Float x)
-    {
+{
 
-        body.setLinearVelocity(new Vector2(x, body.getLinearVelocity().y));
-    }
+    body.setLinearVelocity(new Vector2(x, body.getLinearVelocity().y));
+}
 
 
 
